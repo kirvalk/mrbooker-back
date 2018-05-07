@@ -381,7 +381,7 @@ module.exports = {
     'no-cond-assign': ['error', 'always'],
 
     // disallow use of console
-    'no-console': 'warn',
+    'no-console': 'off',
 
     // disallow use of constant expressions in conditions
     'no-constant-condition': 'warn',
@@ -1098,22 +1098,10 @@ module.exports = {
     'object-curly-newline': [
       'error',
       {
-        ObjectExpression: {
-          minProperties: 4,
-          multiline: true,
-          consistent: true
-        },
-        ObjectPattern: { minProperties: 4, multiline: true, consistent: true },
-        ImportDeclaration: {
-          minProperties: 4,
-          multiline: true,
-          consistent: true
-        },
-        ExportDeclaration: {
-          minProperties: 4,
-          multiline: true,
-          consistent: true
-        }
+        ObjectExpression: { multiline: true },
+        ObjectPattern: { multiline: true },
+        ImportDeclaration: { multiline: true },
+        ExportDeclaration: { minProperties: 4, multiline: true }
       }
     ],
 
