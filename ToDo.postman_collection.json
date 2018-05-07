@@ -1,0 +1,130 @@
+{
+	"variables": [],
+	"info": {
+		"name": "ToDo",
+		"_postman_id": "c4f772b8-a601-4280-d423-0be587137ff6",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "tasks",
+			"request": {
+				"url": "http://localhost:3000/api/v001/tasks",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "tasks/id",
+			"request": {
+				"url": "http://localhost:3000/api/v001/tasks/{{id}}",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "tasks/add",
+			"request": {
+				"url": "http://localhost:3000/api/v001/tasks",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"text\": \"Тестовая задача\"\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "tasks/id/update",
+			"request": {
+				"url": "http://localhost:3000/api/v001/tasks/{{id}}",
+				"method": "PATCH",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"isCompleted\": true\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "tasks/id/delete",
+			"request": {
+				"url": "http://localhost:3000/api/v001/tasks/{{id}}",
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "bad_request",
+			"request": {
+				"url": "http://localhost:3000/api/v001/tasks/{{id}}/delete",
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "invalid_api",
+			"request": {
+				"url": "http://localhost:3000/api/v001/tasks/{{id}}",
+				"method": "PATCH",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"text\": \"00000\",\n\t\"test\": \"123\"\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		}
+	]
+}
