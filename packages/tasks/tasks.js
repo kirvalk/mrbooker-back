@@ -93,7 +93,7 @@ router.patch('/:id', (req, res, next) => {
 // DELETE /tasks/:id
 router.delete('/:id', (req, res) => {
   db
-    .get('tasks')
+    .get('rooms')
     .remove({ id: req.params.id })
     .write();
 
