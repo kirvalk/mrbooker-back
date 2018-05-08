@@ -21,12 +21,12 @@ router.get('/', (req, res) => {
 
 // GET /tasks/:id
 router.get('/:id', (req, res) => {
-  const task = db
-    .get('tasks')
+  const room = db
+    .get('rooms')
     .find({ id: req.params.id })
     .value();
 
-  res.json({ status: 'OK', data: task });
+  res.json({ status: 'OK', data: room });
 });
 
 // POST /tasks
