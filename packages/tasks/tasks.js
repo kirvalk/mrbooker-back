@@ -52,16 +52,14 @@ router.post('/', (req, res, next) => {
     });
   };
 
-  const task = newRoom(req.body);
-
-  console.log(task);
+  const room = newRoom(req.body);
 
   db
-    .get('tasks')
-    .push(task)
+    .get('rooms')
+    .push(room)
     .write();
 
-  res.json({ status: 'OK', data: task });
+  res.json({ status: 'OK', data: room });
 });
 
 // PATCH /tasks/:id
