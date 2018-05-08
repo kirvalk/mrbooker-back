@@ -12,14 +12,14 @@ const { validate } = require('jsonschema');
 //   }
 // });
 
-// GET /tasks
+// GET /rooms
 router.get('/', (req, res) => {
   const rooms = db.get('rooms').value();
 
   res.json({ status: 'OK', data: rooms });
 });
 
-// GET /tasks/:id
+// GET /rooms/:id
 router.get('/:id', (req, res) => {
   const room = db
     .get('rooms')
@@ -29,7 +29,7 @@ router.get('/:id', (req, res) => {
   res.json({ status: 'OK', data: room });
 });
 
-// POST /tasks
+// POST /rooms
 router.post('/', (req, res, next) => {
   // const requestBodySchema = {
   //   id: 'path-task',
@@ -62,7 +62,7 @@ router.post('/', (req, res, next) => {
   res.json({ status: 'OK', data: room });
 });
 
-// PATCH /tasks/:id
+// PATCH /rooms/:id
 router.patch('/:id', (req, res, next) => {
   // const requestBodySchema = {
   //   id: 'path-task',
@@ -97,7 +97,7 @@ router.patch('/:id', (req, res, next) => {
   res.json({ status: 'OK', data: room });
 });
 
-// PATCH /tasks/book/:id
+// PATCH /rooms/book/:id
 router.patch('/book/:id', (req, res, next) => {
   const bookedDates = db
     .get('rooms')
@@ -120,7 +120,7 @@ router.patch('/book/:id', (req, res, next) => {
   res.json({ status: 'OK', data: room });
 });
 
-// DELETE /tasks/:id
+// DELETE /rooms/:id
 router.delete('/:id', (req, res) => {
   db
     .get('rooms')
