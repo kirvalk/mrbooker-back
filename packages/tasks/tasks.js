@@ -79,15 +79,45 @@ router.patch('/:id', (req, res, next) => {
   //   next(new Error('INVALID_API_FORMAT'));
   // }
 
-  const task = db
-    .get('tasks')
+  const room = db
+    .get('rooms')
     .find({ id: req.params.id })
-    .assign(req.body)
     .value();
 
-  db.write();
+  Object.keys(room).forEach(key => {
+    if (!req.body[key]) return;
+    if (typeof room[key] === 'object' && room[key] !== null) {
+      Object.assign(room[key], req.body[key]);
+    } else {
+      room[key] = req.body[key];
+    }
+  });
 
-  res.json({ status: 'OK', data: task });
+  db.write();
+  res.json({ status: 'OK', data: room });
+});
+
+// PATCH /tasks/book/:id
+router.patch('/book/:id', (req, res, next) => {
+  const bookedDates = db
+    .get('rooms')
+    .find({ id: req.params.id })
+    .at('reserved')
+    .first()
+    .value();
+
+  if (bookedDates.indexOf(req.body.date) === -1) {
+    bookedDates.push(req.body.date);
+  } else {
+    bookedDates.splice(bookedDates.indexOf(req.body.date), 1);
+  }
+
+  db.write();
+  const room = db
+    .get('rooms')
+    .find({ id: req.params.id })
+    .value();
+  res.json({ status: 'OK', data: room });
 });
 
 // DELETE /tasks/:id
