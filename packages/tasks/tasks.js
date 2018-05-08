@@ -2,14 +2,6 @@ const router = require('express').Router();
 const db = require('../db/db');
 const { validate } = require('jsonschema');
 
-const newTask = text => ({
-  id: String(Math.random()
-    .toString(16)
-    .split('.')[1]),
-  text,
-  isCompleted: false,
-});
-
 // router.use('/:id', (req, res, next) => {
 //   const task = db.get('tasks')
 //     .find({ id: req.params.id })
@@ -51,7 +43,16 @@ router.post('/', (req, res, next) => {
   //   next(new Error('INVALID_API_FORMAT'));
   // }
 
-  const task = newTask(req.body.text);
+  const newRoom = obj => {
+    return Object.assign(obj, {
+      id: String(Math.random()
+        .toString(16)
+        .split('.')[1]),
+      reserved: [],
+    });
+  };
+
+  const task = newRoom(req.body);
 
   console.log(task);
 
