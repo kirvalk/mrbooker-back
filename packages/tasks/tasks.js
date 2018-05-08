@@ -14,9 +14,9 @@ const { validate } = require('jsonschema');
 
 // GET /tasks
 router.get('/', (req, res) => {
-  const tasks = db.get('tasks').value();
+  const rooms = db.get('rooms').value();
 
-  res.json({ status: 'OK', data: tasks });
+  res.json({ status: 'OK', data: rooms });
 });
 
 // GET /tasks/:id
