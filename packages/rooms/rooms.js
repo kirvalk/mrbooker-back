@@ -19,8 +19,8 @@ router.get('/', (req, res) => {
   res.json({ status: 'OK', data: rooms });
 });
 
-// GET /rooms/:id
-router.get('/:id', (req, res) => {
+// GET /rooms/id=:id
+router.get('/id=:id', (req, res) => {
   const room = db
     .get('rooms')
     .find({ id: req.params.id })
@@ -128,6 +128,32 @@ router.delete('/:id', (req, res) => {
     .write();
 
   res.json({ status: 'OK' });
+});
+
+// GET /rooms/filer?query-string
+router.get('/filter', (req, res) => {
+  const queryObj = req.query;
+  const queryKeys = Object.keys(queryObj);
+  let rooms = db.get('rooms').value();
+
+  queryKeys.forEach(key => {
+    rooms = rooms.filter(room => {
+      if (key === 'capacity') {
+        return room[key] < parseInt(queryObj[key], 10);
+      }
+      if (key === 'reserved') {
+        return room[key].indexOf(parseInt(queryObj[key], 10)) !== -1;
+      }
+      if (room.equipment[key] !== undefined) {
+        const bool = (queryObj[key] === 'true');
+        console.log(bool === room.equipment[key]);
+        return bool === room.equipment[key];
+      }
+      return true;
+    });
+  });
+
+  res.json({ status: 'OK', data: rooms });
 });
 
 module.exports = router;
