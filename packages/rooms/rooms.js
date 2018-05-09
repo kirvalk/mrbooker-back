@@ -139,7 +139,7 @@ router.get('/filter', (req, res) => {
   queryKeys.forEach(key => {
     rooms = rooms.filter(room => {
       if (key === 'capacity') {
-        return room[key] < parseInt(queryObj[key], 10);
+        return room[key] >= parseInt(queryObj[key], 10);
       }
       if (key === 'reserved') {
         return room[key].indexOf(parseInt(queryObj[key], 10)) !== -1;
