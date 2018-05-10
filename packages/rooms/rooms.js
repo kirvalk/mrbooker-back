@@ -126,6 +126,24 @@ router.patch('/:id', (req, res, next) => {
 
 // PATCH /rooms/book/:id
 router.patch('/book/:id', (req, res, next) => {
+  const requestBodySchema = {
+    type: 'object',
+    properties: {
+      date: {
+        type: 'integer',
+        minimum: 1525107600000,
+        maximum: 1546189200000,
+        multipleOf: 100000,
+      },
+      user: { type: 'string' },
+      required: ['date', 'user'],
+    },
+  };
+
+  if (!validate(req.body, requestBodySchema).valid) {
+    next(new Error('INVALID_API_FORMAT'));
+    return;
+  }
   const bookEntries = db
     .get('rooms')
     .find({ id: req.params.id })
