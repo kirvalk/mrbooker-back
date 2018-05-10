@@ -145,7 +145,11 @@ router.get('/filter', (req, res) => {
         return room[key] >= parseInt(queryObj[key], 10);
       }
       if (key === 'reserved') {
-        return room[key].indexOf(parseInt(queryObj[key], 10)) !== -1;
+        return room[key].find(entry => {
+          return entry.date === parseInt(queryObj[key], 10);
+        });
+
+        // indexOf(parseInt(queryObj[key], 10)) !== -1;
       }
       if (room.equipment[key] !== undefined) {
         if (queryObj[key] === '0' || queryObj[key] === '1') {
@@ -157,7 +161,7 @@ router.get('/filter', (req, res) => {
     });
   });
 
-  res.json({ status: 'OK', data: rooms });
+  res.json({ status: 'OK', data: rooms, part: queryObj });
 });
 
 module.exports = router;
