@@ -75,20 +75,36 @@ router.post('/', (req, res, next) => {
 
 // PATCH /rooms/:id
 router.patch('/:id', (req, res, next) => {
-  // const requestBodySchema = {
-  //   id: 'path-task',
-  //   type: 'object',
-  //   properties: {
-  //     text: { type: 'string' },
-  //     isCompleted: { type: 'boolean' },
-  //   },
-  //   additionalProperties: false,
-  //   minProperties: 1,
-  // };
-  //
-  // if (!validate(req.body, requestBodySchema).valid) {
-  //   next(new Error('INVALID_API_FORMAT'));
-  // }
+  const requestBodySchema = {
+    type: 'object',
+    properties: {
+      name: { type: 'string' },
+      capacity: { type: 'integer', minimum: 2 },
+      equipment: {
+        type: 'object',
+        properties: {
+          projector: { type: 'integer', enum: [0, 1] },
+          sound: { type: 'integer', enum: [0, 1] },
+          telephone: { type: 'integer', enum: [0, 1] },
+        },
+        anyOf: [
+          { required: ['projector'] },
+          { required: ['sound'] },
+          { required: ['telephone'] },
+        ],
+      },
+    },
+    anyOf: [
+      { required: ['name'] },
+      { required: ['capacity'] },
+      { required: ['equipment'] },
+    ],
+  };
+
+  if (!validate(req.body, requestBodySchema).valid) {
+    next(new Error('INVALID_API_FORMAT'));
+    return;
+  }
 
   const room = db
     .get('rooms')
