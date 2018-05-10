@@ -2,15 +2,15 @@ const router = require('express').Router();
 const db = require('../db/db');
 const { validate } = require('jsonschema');
 
-// router.use('/:id', (req, res, next) => {
-//   const task = db.get('tasks')
-//     .find({ id: req.params.id })
-//     .value();
-//
-//   if (!task) {
-//     next(new Error('CAN_NOT_FIND_TASK'));
-//   }
-// });
+router.use('/:id', (req, res, next) => {
+  const room = db.get('rooms')
+    .find({ id: req.params.id })
+    .value();
+
+  if (!room) {
+    next(new Error('CAN_NOT_FIND_ROOM'));
+  }
+});
 
 // GET /rooms?query-string
 router.get('/', (req, res) => {
