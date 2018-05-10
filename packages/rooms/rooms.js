@@ -10,6 +10,7 @@ router.use('/:id', (req, res, next) => {
   if (!room) {
     next(new Error('CAN_NOT_FIND_ROOM'));
   }
+  next();
 });
 
 // GET /rooms?query-string
@@ -147,8 +148,8 @@ router.patch('/:id', (req, res, next) => {
   res.json({ status: 'OK', data: room });
 });
 
-// PATCH /rooms/book/:id
-router.patch('/book/:id', (req, res, next) => {
+// PATCH /rooms/:id/book
+router.patch('/:id/book', (req, res, next) => {
   const requestBodySchema = {
     type: 'object',
     properties: {
