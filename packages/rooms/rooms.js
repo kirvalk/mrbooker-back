@@ -31,17 +31,28 @@ router.get('/id=:id', (req, res) => {
 
 // POST /rooms
 router.post('/', (req, res, next) => {
-  // const requestBodySchema = {
-  //   id: 'path-task',
-  //   type: 'object',
-  //   properties: { text: { type: 'string' } },
-  //   required: ['text'],
-  //   additionalProperties: false,
-  // };
-  //
-  // if (!validate(req.body, requestBodySchema).valid) {
-  //   next(new Error('INVALID_API_FORMAT'));
-  // }
+  const requestBodySchema = {
+    type: 'object',
+    properties: {
+      name: { type: 'string' },
+      capacity: { type: 'integer', minimum: 2 },
+      equipment: {
+        type: 'object',
+        properties: {
+          projector: { type: 'integer', enum: [0, 1] },
+          sound: { type: 'integer', enum: [0, 1] },
+          telephone: { type: 'integer', enum: [0, 1] },
+        },
+        required: ['projector', 'sound', 'telephone'],
+      },
+    },
+    required: ['name', 'capacity', 'equipment'],
+  };
+
+  if (!validate(req.body, requestBodySchema).valid) {
+    next(new Error('INVALID_API_FORMAT'));
+    return;
+  }
 
   const newRoom = obj => {
     return Object.assign(obj, {
