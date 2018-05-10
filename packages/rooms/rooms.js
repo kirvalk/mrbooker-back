@@ -7,10 +7,7 @@ router.use('/:id', (req, res, next) => {
     .find({ id: req.params.id })
     .value();
 
-  if (!room) {
-    next(new Error('CAN_NOT_FIND_ROOM'));
-  }
-  next();
+  next(!room ? new Error('CAN_NOT_FIND_ROOM') : null);
 });
 
 // GET /rooms?query-string
