@@ -12,15 +12,38 @@ const { validate } = require('jsonschema');
 //   }
 // });
 
-// GET /rooms
+// GET /rooms?query-string
 router.get('/', (req, res) => {
-  const rooms = db.get('rooms').value();
+  const queryObj = req.query;
+  const queryKeys = Object.keys(queryObj);
+  let rooms = db.get('rooms').value();
 
-  res.json({ status: 'OK', data: rooms });
+  queryKeys.forEach(key => {
+    rooms = rooms.filter(room => {
+      if (key === 'capacity') {
+        return room[key] >= parseInt(queryObj[key], 10);
+      }
+      if (key === 'reserved') {
+        return room[key].find(entry => {
+          return entry.date === parseInt(queryObj[key], 10);
+        });
+      }
+      if (room.equipment[key] !== undefined) {
+        if (queryObj[key] === '0' || queryObj[key] === '1') {
+          const bool = parseInt(queryObj[key], 10);
+          return bool === room.equipment[key];
+        }
+      }
+      return true;
+    });
+  });
+
+  res.json({ status: 'OK', data: rooms, part: queryObj });
 });
 
-// GET /rooms/id=:id
-router.get('/id=:id', (req, res) => {
+
+// GET /rooms/:id
+router.get('/:id', (req, res) => {
   const room = db
     .get('rooms')
     .find({ id: req.params.id })
@@ -178,33 +201,5 @@ router.delete('/:id', (req, res) => {
   res.json({ status: 'OK' });
 });
 
-// GET /rooms/filer?query-string
-router.get('/filter', (req, res) => {
-  const queryObj = req.query;
-  const queryKeys = Object.keys(queryObj);
-  let rooms = db.get('rooms').value();
-
-  queryKeys.forEach(key => {
-    rooms = rooms.filter(room => {
-      if (key === 'capacity') {
-        return room[key] >= parseInt(queryObj[key], 10);
-      }
-      if (key === 'reserved') {
-        return room[key].find(entry => {
-          return entry.date === parseInt(queryObj[key], 10);
-        });
-      }
-      if (room.equipment[key] !== undefined) {
-        if (queryObj[key] === '0' || queryObj[key] === '1') {
-          const bool = parseInt(queryObj[key], 10);
-          return bool === room.equipment[key];
-        }
-      }
-      return true;
-    });
-  });
-
-  res.json({ status: 'OK', data: rooms, part: queryObj });
-});
 
 module.exports = router;
