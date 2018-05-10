@@ -148,8 +148,6 @@ router.get('/filter', (req, res) => {
         return room[key].find(entry => {
           return entry.date === parseInt(queryObj[key], 10);
         });
-
-        // indexOf(parseInt(queryObj[key], 10)) !== -1;
       }
       if (room.equipment[key] !== undefined) {
         if (queryObj[key] === '0' || queryObj[key] === '1') {
