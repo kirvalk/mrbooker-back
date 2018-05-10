@@ -99,17 +99,20 @@ router.patch('/:id', (req, res, next) => {
 
 // PATCH /rooms/book/:id
 router.patch('/book/:id', (req, res, next) => {
-  const bookedDates = db
+  const bookEntries = db
     .get('rooms')
     .find({ id: req.params.id })
     .at('reserved')
     .first()
     .value();
 
-  if (bookedDates.indexOf(req.body.date) === -1) {
-    bookedDates.push(req.body.date);
+  const alreadyBooked = bookEntries.find(entry => {
+    return entry.date === req.body.date;
+  });
+  if (alreadyBooked) {
+    bookEntries.splice(bookEntries.indexOf(alreadyBooked), 1);
   } else {
-    bookedDates.splice(bookedDates.indexOf(req.body.date), 1);
+    bookEntries.push({ date: req.body.date, user: req.body.user });
   }
 
   db.write();
