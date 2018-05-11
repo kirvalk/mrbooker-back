@@ -71,8 +71,7 @@ router.post('/', (req, res, next) => {
   };
 
   if (!validate(req.body, requestBodySchema).valid) {
-    next(new Error('INVALID_API_FORMAT'));
-    return;
+    return next(new Error('INVALID_API_FORMAT'));
   }
 
   const newRoom = obj => {
@@ -123,8 +122,7 @@ router.patch('/:id', (req, res, next) => {
   };
 
   if (!validate(req.body, requestBodySchema).valid) {
-    next(new Error('INVALID_API_FORMAT'));
-    return;
+    return next(new Error('INVALID_API_FORMAT'));
   }
 
   const room = db
@@ -162,8 +160,7 @@ router.patch('/:id/book', (req, res, next) => {
   };
 
   if (!validate(req.body, requestBodySchema).valid) {
-    next(new Error('INVALID_API_FORMAT'));
-    return;
+    return next(new Error('INVALID_API_FORMAT'));
   }
   const bookEntries = db
     .get('rooms')
