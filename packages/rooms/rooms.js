@@ -2,6 +2,10 @@ const router = require('express').Router();
 const db = require('../db/db');
 const { validate } = require('jsonschema');
 
+router.use((req, res, next) => {
+  setTimeout(next, 300);
+});
+
 router.use('/:id', (req, res, next) => {
   const room = db.get('rooms')
     .find({ id: req.params.id })
