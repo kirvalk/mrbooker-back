@@ -46,7 +46,7 @@ router.get('/', (req, res, next) => {
     });
   });
 
-  res.json({ status: 'OK', data: rooms, part: queryObj });
+  res.json({ status: 'OK', data: rooms });
 });
 
 
