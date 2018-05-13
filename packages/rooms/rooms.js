@@ -101,6 +101,7 @@ router.post('/', (req, res, next) => {
     .write();
 
   res.json({ status: 'OK', data: room });
+  return room;
 });
 
 // PATCH /rooms/:id
@@ -151,6 +152,7 @@ router.patch('/:id', (req, res, next) => {
 
   db.write();
   res.json({ status: 'OK', data: room });
+  return room;
 });
 
 // PATCH /rooms/:id/book
@@ -194,6 +196,7 @@ router.patch('/:id/book', (req, res, next) => {
     .find({ id: req.params.id })
     .value();
   res.json({ status: 'OK', data: room });
+  return bookEntries;
 });
 
 // DELETE /rooms/:id
