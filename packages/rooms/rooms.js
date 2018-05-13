@@ -23,16 +23,16 @@ router.get('/', (req, res) => {
   queryKeys.forEach(key => {
     rooms = rooms.filter(room => {
       if (key === 'capacity') {
-        return room[key] >= parseInt(queryObj[key], 10);
+        return room[key] >= Number(queryObj[key]);
       }
       if (key === 'reserved') {
         return room[key].find(entry => {
-          return entry.date === parseInt(queryObj[key], 10);
+          return entry.date === Number(queryObj[key]);
         });
       }
       if (room.equipment[key] !== undefined) {
         if (queryObj[key] === '0' || queryObj[key] === '1') {
-          const bool = parseInt(queryObj[key], 10);
+          const bool = Number(queryObj[key]);
           return bool === room.equipment[key];
         }
       }
