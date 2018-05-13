@@ -15,7 +15,7 @@ router.use('/:id', (req, res, next) => {
 });
 
 // GET /rooms?query-string
-router.get('/', (req, res) => {
+router.get('/', (req, res, next) => {
   const queryObj = req.query;
   const queryKeys = Object.keys(queryObj);
   let rooms = db.get('rooms').value();
@@ -23,9 +23,15 @@ router.get('/', (req, res) => {
   queryKeys.forEach(key => {
     rooms = rooms.filter(room => {
       if (key === 'capacity') {
+        if (!Number(queryObj[key]) || Number(queryObj[key]) % 1 !== 0) {
+          return next(new Error('INCORRECT_PARAMS: capacity must be an integer'));
+        }
         return room[key] >= Number(queryObj[key]);
       }
       if (key === 'reserved') {
+        if (!Number(queryObj[key]) || Number(queryObj[key]) % 1 !== 0) {
+          return next(new Error('INCORRECT_PARAMS: reserved must be time in milliseconds'));
+        }
         return room[key].find(entry => {
           return entry.date === Number(queryObj[key]);
         });
@@ -75,8 +81,7 @@ router.post('/', (req, res, next) => {
   };
 
   if (!validate(req.body, requestBodySchema).valid) {
-    next(new Error('INVALID_API_FORMAT'));
-    return;
+    return next(new Error('INVALID_API_FORMAT'));
   }
 
   const newRoom = obj => {
@@ -127,8 +132,7 @@ router.patch('/:id', (req, res, next) => {
   };
 
   if (!validate(req.body, requestBodySchema).valid) {
-    next(new Error('INVALID_API_FORMAT'));
-    return;
+    return next(new Error('INVALID_API_FORMAT'));
   }
 
   const room = db
@@ -166,8 +170,7 @@ router.patch('/:id/book', (req, res, next) => {
   };
 
   if (!validate(req.body, requestBodySchema).valid) {
-    next(new Error('INVALID_API_FORMAT'));
-    return;
+    return next(new Error('INVALID_API_FORMAT'));
   }
   const bookEntries = db
     .get('rooms')
