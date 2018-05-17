@@ -24,7 +24,7 @@ router.get('/', (req, res, next) => {
     rooms = rooms.filter(room => {
       if (key === 'capacity') {
         if (Number(queryObj[key]) < 0 || Number(queryObj[key]) % 1 !== 0) {
-          return next(new Error('INCORRECT_PARAMS: capacity must be an integer'));
+          return next(new Error('INCORRECT_PARAMS: capacity must be a positive integer'));
         }
         return room[key] >= Number(queryObj[key]);
       }
@@ -32,7 +32,7 @@ router.get('/', (req, res, next) => {
         if (!Number(queryObj[key]) || Number(queryObj[key]) % 1 !== 0) {
           return next(new Error('INCORRECT_PARAMS: reserved must be time in milliseconds'));
         }
-        return room[key].find(entry => {
+        return !room[key].find(entry => {
           return entry.date === Number(queryObj[key]);
         });
       }
