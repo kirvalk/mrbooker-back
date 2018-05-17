@@ -23,7 +23,7 @@ router.get('/', (req, res, next) => {
   queryKeys.forEach(key => {
     rooms = rooms.filter(room => {
       if (key === 'capacity') {
-        if (!Number(queryObj[key]) || Number(queryObj[key]) % 1 !== 0) {
+        if (Number(queryObj[key]) < 0 || Number(queryObj[key]) % 1 !== 0) {
           return next(new Error('INCORRECT_PARAMS: capacity must be an integer'));
         }
         return room[key] >= Number(queryObj[key]);
