@@ -1,2 +1,1 @@
-# nodejs-express
-example express project
+# MR Booker backend
